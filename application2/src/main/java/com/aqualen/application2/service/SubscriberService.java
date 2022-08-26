@@ -19,7 +19,7 @@ public class SubscriberService {
   private final JmsTemplate jmsTemplate;
 
   @SneakyThrows
-  @JmsListener(destination = "${activemq.topic}")
+  @JmsListener(destination = "${activemq.queue}")
   public void receiveMessage(Message jmsMessage) {
     try {
       String message = ((ActiveMQTextMessage) jmsMessage).getText();

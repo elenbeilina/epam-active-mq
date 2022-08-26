@@ -18,19 +18,19 @@ import java.util.Optional;
 public class PublisherService {
 
   private final JmsTemplate jmsTemplate;
-  @Value("${activemq.topic}")
-  private String topic;
+  @Value("${activemq.queue}")
+  private String queue;
 
   @SneakyThrows
   public void publishMessage(String message) {
     MessageCreator creator = (session) -> (session.createTextMessage(message));
 
     // Send and receive a message. A temporary queue is automatically added as replyTo address.
-    ActiveMQTextMessage activeMQMessage = (ActiveMQTextMessage) jmsTemplate.sendAndReceive(topic, creator);
+    ActiveMQTextMessage activeMQMessage = (ActiveMQTextMessage) jmsTemplate.sendAndReceive(queue, creator);
 
     String status = Optional.ofNullable(activeMQMessage.getText())
         .orElse("UNDEFINED");
 
-    log.info("Message: {} was sent to the topic: {} with status: {}", message, topic, status);
+    log.info("Message: {} was sent to the queue: {} with status: {}", message, queue, status);
   }
 }
